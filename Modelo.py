@@ -4,9 +4,21 @@ from ctypes import c_void_p
 import glm
 
 class Modelo:
+    def colisionando(self, modelo):
+        assert isinstance(modelo,Modelo)
+        colisionando = False
+
+        if (self.posicion.x + self.extremo_derecho >= modelo.posicion.x - modelo.extremo_izquierdo 
+            and self.posicion.x - self.extremo_izquierdo <= modelo.posicion.x + modelo.extremo_derecho 
+            and self.posicion.y + self.extremo_superior >= modelo.posicion.y - modelo.extremo_inferior 
+            and self.posicion.y - self.extremo_inferior <= modelo.posicion.y + modelo.extremo_superior):
+            colisionando = True 
+        return colisionando
+
     def __init__(self, shader, posicion_id, color_id, transformaciones_id):
         self.shader = shader
         self.transformaciones_id = transformaciones_id
+
         #Generar vertex array object y vertex buffer object
         self.VAO = gl.glGenVertexArrays(1)
         self.VBO = gl.glGenBuffers(1)
@@ -31,8 +43,6 @@ class Modelo:
 
         gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
         gl.glBindVertexArray(0)
-
-
 
     def borrar(self):
         gl.glDeleteVertexArrays(1, self.VAO)

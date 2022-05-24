@@ -5,13 +5,23 @@ from Shader import *
 from Modelo import *
 from Jugador import Jugador
 from Fondo import Fondo
+from Enemigo import *
+from Enemigo2 import *
+from Enemigo3 import *
+from Ganar import *
 
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
 
 fondo = None
 modelo = None
+enemigo = None
+enemigo2 = None
+enemigo3 = None
+ganar = None
 window = None
+
+tiempo_anterior = 0.0
 
 vertex_shader_source = ""
 with open('vertex_shader.glsl') as archivo:
@@ -22,6 +32,9 @@ with open('fragment_shader.glsl') as archivo:
     fragment_shader_source = archivo.readlines()
 
 def actualizar():
+    global tiempo_anterior
+    tiempo_actual = glfw.get_time()
+    tiempo_delta = tiempo_actual - tiempo_anterior
     global window
     estado_arriba = glfw.get_key(window, glfw.KEY_UP)
     estado_abajo = glfw.get_key(window, glfw.KEY_DOWN)
@@ -29,25 +42,66 @@ def actualizar():
     estado_izquierda = glfw.get_key(window, glfw.KEY_LEFT)
 
     if estado_arriba == glfw.PRESS:
-        modelo.mover(modelo.ARRIBA)
+        modelo.mover(modelo.ARRIBA, tiempo_delta)
     if estado_abajo == glfw.PRESS:
-        modelo.mover(modelo.ABAJO)
+        modelo.mover(modelo.ABAJO, tiempo_delta)
     if estado_derecha == glfw.PRESS:
-        modelo.mover(modelo.DERECHA)
+        modelo.mover(modelo.DERECHA, tiempo_delta)
     if estado_izquierda == glfw.PRESS:
-        modelo.mover(modelo.IZQUIERDA)
+        modelo.mover(modelo.IZQUIERDA, tiempo_delta)
 
+    enemigo.actualizar(tiempo_delta)
+    enemigo2.actualizar(tiempo_delta)
+    enemigo3.actualizar(tiempo_delta)
+    ganar.actualizar(tiempo_delta)
 
+    
+    if modelo.colisionando(enemigo):
+        glfw.set_window_should_close(window, 1)
+        print("You Lose")
+
+    if modelo.colisionando(enemigo2):
+        glfw.set_window_should_close(window, 1)
+        print("You Lose")
+    
+    if modelo.colisionando(enemigo3):
+        glfw.set_window_should_close(window, 1)
+        print("You Lose")
+
+    if modelo.colisionando(ganar):
+        glfw.set_window_should_close(window, 1)
+        print("You Win")
+
+    tiempo_anterior = tiempo_actual
+
+def colisionando():
+    colisionando = False
+    return colisionando
+    
 def dibujar():
     global modelo
-    global fondo 
+    global fondo
+    global enemigo
+    global enemigo2
+    global enemigo3
+    global ganar
+
     fondo.dibujar()
+    enemigo.dibujar()
+    enemigo2.dibujar()
+    enemigo3.dibujar()
+    ganar.dibujar()
     modelo.dibujar()
 
 def main():
     global modelo
     global fondo
     global window
+    global enemigo 
+    global enemigo2
+    global enemigo3
+    global ganar
+
     glfw.init()
 
     glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR,3)
@@ -80,6 +134,14 @@ def main():
     modelo = Jugador(shader, 
             posicion_id, color_id, transformaciones_id)
 
+    enemigo = Enemigo(shader, posicion_id, color_id, transformaciones_id)
+
+    enemigo2 = Enemigo2(shader, posicion_id, color_id, transformaciones_id)
+
+    enemigo3 = Enemigo3(shader, posicion_id, color_id, transformaciones_id)
+
+    ganar = Ganar(shader, posicion_id, color_id, transformaciones_id)
+
 
     #draw loop
     while not glfw.window_should_close(window):
@@ -96,8 +158,11 @@ def main():
     #Liberar memoria
     modelo.borrar()
     fondo.borrar()
+    enemigo.borrar()
+    enemigo2.borrar()
+    enemigo3.borrar()
+    ganar.borrar()
     shader.borrar()
-
 
     glfw.terminate()
     return 0

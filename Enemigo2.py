@@ -2,9 +2,9 @@ from OpenGL.GL import *
 from Modelo import *
 import glm
 
-class Enemigo(Modelo):
+class Enemigo2(Modelo):
 
-    velocidad = 2.5
+    velocidad = 3.5
     direccion = 0
 
     def __init__(self,shader, posicion_id, transformaciones_id, color_id):
@@ -12,7 +12,7 @@ class Enemigo(Modelo):
         self.extremo_derecho = 0.0
         self.extremo_inferior = 0.07
         self.extremo_superior = 0.07
-        self.posicion = glm.vec3(0.0,0.35,0.0)
+        self.posicion = glm.vec3(0.0,-0.05,0.0)
 
         self.vertices = np.array(
             [
@@ -42,6 +42,7 @@ class Enemigo(Modelo):
         self.transformaciones = glm.mat4(1.0)
         self.transformaciones = glm.translate(self.transformaciones, self.posicion)
 
+    
         self.shader.usar_programa()
         gl.glBindVertexArray(self.VAO)
 
