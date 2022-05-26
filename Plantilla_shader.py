@@ -5,12 +5,9 @@ from Shader import *
 from Modelo import *
 from Jugador import Jugador
 from Fondo import Fondo
-from Enemigo import *
-from Enemigo2 import *
-from Enemigo3 import *
-from Enemigo4 import *
-from Enemigo5 import *
+from Enemigos import *
 from Ganar import *
+
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
 
