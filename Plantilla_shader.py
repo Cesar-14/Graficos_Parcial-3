@@ -8,8 +8,9 @@ from Fondo import Fondo
 from Enemigo import *
 from Enemigo2 import *
 from Enemigo3 import *
+from Enemigo4 import *
+from Enemigo5 import *
 from Ganar import *
-
 SCREEN_WIDTH = 700
 SCREEN_HEIGHT = 700
 
@@ -18,6 +19,8 @@ modelo = None
 enemigo = None
 enemigo2 = None
 enemigo3 = None
+enemigo4 = None
+enemigo5 = None
 ganar = None
 window = None
 
@@ -53,24 +56,28 @@ def actualizar():
     enemigo.actualizar(tiempo_delta)
     enemigo2.actualizar(tiempo_delta)
     enemigo3.actualizar(tiempo_delta)
+    enemigo4.actualizar(tiempo_delta)
+    enemigo5.actualizar(tiempo_delta)
     ganar.actualizar(tiempo_delta)
 
     
     if modelo.colisionando(enemigo):
         glfw.set_window_should_close(window, 1)
-        print("You Lose")
 
     if modelo.colisionando(enemigo2):
         glfw.set_window_should_close(window, 1)
-        print("You Lose")
     
     if modelo.colisionando(enemigo3):
         glfw.set_window_should_close(window, 1)
-        print("You Lose")
+
+    if modelo.colisionando(enemigo4):
+        glfw.set_window_should_close(window, 1)
+
+    if modelo.colisionando(enemigo5):
+        glfw.set_window_should_close(window, 1)
 
     if modelo.colisionando(ganar):
         glfw.set_window_should_close(window, 1)
-        print("You Win")
 
     tiempo_anterior = tiempo_actual
 
@@ -84,12 +91,16 @@ def dibujar():
     global enemigo
     global enemigo2
     global enemigo3
+    global enemigo4
+    global enemigo5
     global ganar
 
     fondo.dibujar()
     enemigo.dibujar()
     enemigo2.dibujar()
     enemigo3.dibujar()
+    enemigo4.dibujar()
+    enemigo5.dibujar()
     ganar.dibujar()
     modelo.dibujar()
 
@@ -100,6 +111,8 @@ def main():
     global enemigo 
     global enemigo2
     global enemigo3
+    global enemigo4
+    global enemigo5
     global ganar
 
     glfw.init()
@@ -140,6 +153,10 @@ def main():
 
     enemigo3 = Enemigo3(shader, posicion_id, color_id, transformaciones_id)
 
+    enemigo4 = Enemigo4(shader, posicion_id, color_id, transformaciones_id)
+
+    enemigo5 = Enemigo5(shader, posicion_id, color_id, transformaciones_id)
+
     ganar = Ganar(shader, posicion_id, color_id, transformaciones_id)
 
 
@@ -161,6 +178,8 @@ def main():
     enemigo.borrar()
     enemigo2.borrar()
     enemigo3.borrar()
+    enemigo4.borrar()
+    enemigo5.borrar()
     ganar.borrar()
     shader.borrar()
 

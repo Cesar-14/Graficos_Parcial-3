@@ -46,15 +46,15 @@ class Jugador(Modelo):
                 self.posicion)
         
         
-        if self.posicion.x > 1.05: 
-            self.posicion.x = -1.0
-        if self.posicion.x < -1.05: 
-            self.posicion.x = 1.0
+        if self.posicion.x > 0.75: 
+            self.posicion = glm.vec3(-0.65,0.58,0.0)
+        if self.posicion.x < -0.75: 
+            self.posicion = glm.vec3(-0.65,0.58,0.0)
             
-        if self.posicion.y > 1.05: 
-            self.posicion.y = -1.0   
-        if self.posicion.y < -1.05: 
-            self.posicion.y = 1.0  
+        if self.posicion.y > 0.67: 
+            self.posicion = glm.vec3(-0.65,0.58,0.0)  
+        if self.posicion.y < -0.8: 
+            self.posicion = glm.vec3(-0.65,0.58,0.0)  
 
     def dibujar(self):
         self.shader.usar_programa()
